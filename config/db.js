@@ -12,7 +12,6 @@ const connectDB = async () => {
 
     const url = `${connection.connection.host}:${connection.connection.port}`;
     console.log('MongoDB connected in', url);
-    console.log(process.env.TEST_ENV);
 
   } catch (error) {
     console.log(`error: ${error.message}`);
