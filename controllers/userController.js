@@ -3,37 +3,26 @@ import generateId from "../helpers/generateId.js";
 import generateJWT from "../helpers/generateJWT.js";
 import { registerEmail, recoverPassword } from "../helpers/emails.js";
 
-export const registerUser = async (req, res) => {
+export const receiveEmail = async (req, res) => {
     const { email } = req.body;
+
     if (!email) {
-        const error = new Error('Email is missing or invalid');
+        const error = new Error('Email is missing');
         return res.status(400).json({msg: error.message});
     }
 
-    const userExists = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-    if(userExists) {
-        const error = new Error('User already registered');
-        return res.status(400).json({ msg: error.message });
-    }
-
-    try {
-        const user = new User(req.body);
-        user.token = generateId();
-        await user.save();
-
-        registerEmail({ 
-            email: user.email,
-            name: user.name,
-            token: user.token,
-        });
-
-        res.json({ msg: 'Account created successfully, check your email to confirm it' });
-    } catch (e) {
-        console.log(e);
-
-        const error = new Error('Internal server error');
-        return res.status(400).json({ msg: error.message });
+    if (!user) {
+        res.json ({ msg: 'New user' });
+    } else {
+        res.json({ 
+            msg: 'Existing user', 
+            user: { 
+                name: user.name, 
+                email,
+            },
+        })
     }
 }
 
