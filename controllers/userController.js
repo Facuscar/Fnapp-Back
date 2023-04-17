@@ -15,15 +15,16 @@ export const receiveEmail = async (req, res) => {
 
     if (!user) {
         res.json ({ msg: 'New user' });
-    } else {
-        res.json({ 
-            msg: 'Existing user', 
-            user: { 
-                name: user.name, 
-                email,
-            },
-        })
+        return;
     }
+    
+    res.json({ 
+        msg: 'Existing user', 
+        user: { 
+            name: user.name, 
+            email,
+        },
+    })
 }
 
 export const authUser = async (req, res) => {

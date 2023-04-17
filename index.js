@@ -10,9 +10,23 @@ dotenv.config();
 
 connectDB();
 
+const whitelist =  [process.env.WHITELISTED_URL];
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.includes(origin)) {
+        callback(null, true)
+    } else {
+        callback(new Error('Cors error'));
+    }
+},
+}
+
+app.use(corsOptions);
+
 app.use('/api/users', userRoutes);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log('Server running on port 4000');
