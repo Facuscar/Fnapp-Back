@@ -27,6 +27,41 @@ export const receiveEmail = async (req, res) => {
     })
 }
 
+export const registerUser = async (req, res) => {
+    const { email, password, name } = req.body;
+
+    if (!email || !password || !name) {
+        const error = new Error('One or more fields are missing');
+        return res.status(400).json({ msg: error.message });
+    }
+
+    const dbUser = await User.findOne();
+
+    if (dbUser) {
+        const error = new Error('User already registered');
+        return res.status(400).json({ msg: error.message });
+    }
+
+    try {
+        const user = new User(req.body);
+        user.token = generateId();
+        await user.save();
+
+        //TODO: Update this function
+        registerEmail({ 
+            email: user.email,
+            name: user.name,
+            token: user.token,
+        });
+
+        res.json({ msg: 'Account created successfully, check your email to confirm it' });
+    } catch (e) {
+        console.log(e);
+        const error = new Error('Internal server error');
+        return res.status(500).json({ msg: error.message });
+    }
+}
+
 export const authUser = async (req, res) => {
 
     const { email, password } = req.body;
