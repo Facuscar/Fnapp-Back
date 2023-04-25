@@ -54,7 +54,7 @@ export const registerUser = async (req, res) => {
             token: user.token,
         });
 
-        res.json({ msg: 'Account created successfully, check your email to confirm it' });
+        res.json({ msg: 'Account created successfully, check your email to confirm it', success: true });
     } catch (e) {
         console.log(e);
         const error = new Error('Internal server error');
