@@ -48,6 +48,8 @@ export const registerUser = async (req, res) => {
         await user.save();
 
         //TODO: Update this function
+
+        //TODO: HASH PASSWORDS PLEASE
         registerEmail({ 
             email: user.email,
             name: user.name,
