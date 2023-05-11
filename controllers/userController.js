@@ -47,9 +47,6 @@ export const registerUser = async (req, res) => {
         user.token = generateId();
         await user.save();
 
-        //TODO: Update this function
-
-        //TODO: HASH PASSWORDS PLEASE
         registerEmail({ 
             email: user.email,
             name: user.name,
@@ -95,6 +92,7 @@ export const authUser = async (req, res) => {
 
 export const confirm = async (req, res) => {
     const { token } = req.params;
+    console.log(token);
     const user = await User.findOne({ token });
     if (!user) {
         const error = new Error('Invalid token');

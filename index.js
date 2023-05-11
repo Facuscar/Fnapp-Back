@@ -12,10 +12,11 @@ dotenv.config();
 
 connectDB();
 
-const whitelist =  [process.env.WHITELISTED_URL];
+const whitelist =  [process.env.WHITELISTED_URL, undefined];
 
 const corsOptions = {
   origin: function(origin, callback) {
+    console.log(origin);
     if (whitelist.includes(origin)) {
         callback(null, true)
     } else {
