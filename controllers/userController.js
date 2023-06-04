@@ -163,6 +163,11 @@ export const newPassword = async (req, res) => {
         return res.status(403).json({ msg: error.message });
     }
 
+    if (await user.verifyPassword(password)) {
+        const error = new Error('Your new password can\'t be the same as the old one');
+        return res.status(404).json({msg: error.message});
+    }
+
     user.password = password;
     user.token = null;
     try {
